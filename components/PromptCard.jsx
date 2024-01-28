@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
 const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
+
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
@@ -26,6 +27,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
     setTimeout(() => setCopied(false), 3000);
   };
 
+  try{
   return (
     <div className='prompt_card'>
       <div className='flex justify-between items-start gap-5'>
@@ -91,6 +93,10 @@ const PromptCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
       )}
     </div>
   );
+  }
+  catch(e){
+    console.log(e);
+  };
 };
 
 export default PromptCard;

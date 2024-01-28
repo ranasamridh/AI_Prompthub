@@ -5,21 +5,29 @@ import { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
-  return (
-    <div className='mt-16 prompt_layout'>
-      {data.map((post) => (
-        <PromptCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
-      ))}
-    </div>
-  );
+
+  try {
+    return (
+      <div className='mt-16 prompt_layout'>
+        {data.map((post) => (
+          <PromptCard
+            key={post._id}
+            post={post}
+            handleTagClick={handleTagClick}
+          />
+        ))}
+      </div>
+    );
+  } catch (error) {
+    console.log(error);
+  }
+  
 };
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+
+  let postData = [];
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -31,6 +39,8 @@ const Feed = () => {
     const data = await response.json();
 
     setAllPosts(data);
+    postData = data;
+
   };
 
   useEffect(() => {
@@ -38,13 +48,20 @@ const Feed = () => {
   }, []);
 
   const filterPrompts = (searchtext) => {
-    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
-    return allPosts.filter(
-      (item) =>
-        regex.test(item.creator.username) ||
-        regex.test(item.tag) ||
-        regex.test(item.prompt)
-    );
+
+    try {
+      const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+
+      return allPosts.filter(
+        (item) =>
+          regex.test(item.creator.username) ||
+          regex.test(item.tag) ||
+          regex.test(item.prompt)
+      );  
+    } catch (error) {
+      console.log(error);
+    }
+    
   };
 
   const handleSearchChange = (e) => {
@@ -93,4 +110,4 @@ const Feed = () => {
   );
 };
 
-export default Feed;
+export default Feed;             // at the end of every Component, C capitol
